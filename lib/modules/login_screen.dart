@@ -1,9 +1,11 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, must_be_immutable
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, must_be_immutable, avoid_print
 
+import 'package:cinema_app/layout/home_layout.dart';
 import 'package:cinema_app/modules/register_screen.dart';
 import 'package:cinema_app/shared/components.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_cubit.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_states.dart';
+import 'package:cinema_app/shared/networks/local/cache_helper.dart';
 import 'package:cinema_app/shared/styles/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,22 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AppLoginSuccesState) {
+            if (state.loginModel!.message == "Logged In Successfully") {
+              print(state.loginModel!.message);
+              CacheHelper.saveData(key: "token", value: state.loginModel!.token)
+                  .then((value) {
+                navigateAndFinish(context, HomeLayout());
+              });
+            } else {
+              print(state.loginModel!.message.toString());
+              showToast(
+                  text: state.loginModel!.message.toString(),
+                  state: ToasStates.error);
+            }
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(),
@@ -87,13 +104,22 @@ class LoginScreen extends StatelessWidget {
                           },
                           controller: passwordController,
                           type: TextInputType.visiblePassword,
-                          onSubmit: () {},
+                          onSubmit: () {
+                            if (formKey.currentState!.validate()) {
+                              LoginCubit.get(context).userLogin(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+                            }
+                          },
                           onTab: () {},
                           onChanged: () {},
+                          isPassword: LoginCubit.get(context).isPassword,
                           label: "Password",
                           prefix: Icons.lock_outline,
-                          suffix: Icons.visibility_outlined,
-                          suffixPressed: () {}),
+                          suffix: LoginCubit.get(context).suffix,
+                          suffixPressed: () {
+                            LoginCubit.get(context).changePasswordVisibility();
+                          }),
                       SizedBox(
                         height: 25,
                       ),
@@ -101,12 +127,11 @@ class LoginScreen extends StatelessWidget {
                         condition: state is! AppLoginLoadingState,
                         builder: (context) => defaultButton(
                             function: () {
-                              if(formKey.currentState!.validate()){
-                                 LoginCubit.get(context).userLogin(
-                                  email: emailController.text,
-                                  password: passwordController.text);
+                              if (formKey.currentState!.validate()) {
+                                LoginCubit.get(context).userLogin(
+                                    email: emailController.text,
+                                    password: passwordController.text);
                               }
-                             
                             },
                             text: "Login",
                             isUpperCase: true),
@@ -123,6 +148,11 @@ class LoginScreen extends StatelessWidget {
                               text: "Register",
                               onpressed: () {
                                 navigateTo(context, RegisterScreen());
+                                // dio!
+                                //     .get("http://92.205.60.182:5431/GetUser")
+                                //     .then((value) {
+                                //   print(value.data);
+                                // });
                               }),
                         ],
                       )

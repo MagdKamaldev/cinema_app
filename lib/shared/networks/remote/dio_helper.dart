@@ -1,3 +1,5 @@
+import 'package:cinema_app/main.dart';
+import 'package:cinema_app/models/user_model.dart';
 import 'package:dio/dio.dart';
 
 class DioHelper {
@@ -6,15 +8,32 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://92.205.60.182:5431/',
-        receiveDataWhenStatusError: true,
-      ),
+          baseUrl: 'http://92.205.60.182:5431/',
+          receiveDataWhenStatusError: true,
+          headers: {"Cookie": "jwt=$jwt"}),
     );
+  }
+
+  static Future<bool> jwtOrEmpty() async {
+    try {
+      return await DioHelper.getData(
+        url: "GetUser",
+      ).then((value) {
+        if (value.statusCode == 200) {
+          currentUser = User.fromJson(value.data);
+          return true;
+        } else {
+          return false;
+        }
+      }).timeout(const Duration(seconds: 4));
+    } catch (e) {
+      return false;
+    }
   }
 
   static Future<Response> getData({
     required String url,
-    required Map<String, dynamic> query,
+    Map<String, dynamic>? query,
   }) async {
     return await dio!.get(
       url,
@@ -24,14 +43,13 @@ class DioHelper {
 
   static Future<Response> postData({
     required String url,
-    Map<String,dynamic> ? query,
-    required Map<String,dynamic> data,
+    Map<String, dynamic>? query,
+    required Map<String, dynamic> data,
   }) {
     return dio!.post(
       url,
       queryParameters: query,
       data: data,
     );
-    
   }
 }

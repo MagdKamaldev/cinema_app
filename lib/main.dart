@@ -1,4 +1,5 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use
+// ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+import 'package:cinema_app/modules/login_screen.dart';
 import 'package:cinema_app/modules/on_boarding_screen.dart';
 import 'package:cinema_app/shared/bloc_observer.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_cubit.dart';
@@ -8,17 +9,37 @@ import 'package:cinema_app/shared/networks/remote/dio_helper.dart';
 import 'package:cinema_app/shared/styles/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'layout/home_layout.dart';
+import 'models/user_model.dart';
+
+String? jwt;
+User? currentUser;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  DioHelper.init();
   await CacheHelper.init();
-  runApp(const MyApp());
+  jwt = CacheHelper.getString(key: "jwt");
+  DioHelper.init();
+  bool isLoggedIn = await DioHelper.jwtOrEmpty();
+  Widget? widget;
+  bool onBoarding = CacheHelper.getData(key: "onBoarding");
+  String token = CacheHelper.getData(key: "token");
+  if (onBoarding != null) {
+    if (token != null) {
+      widget = HomeLayout();
+    } else {
+      widget = LoginScreen();
+    }
+  } else {
+    widget = OnBoardingScreen();
+  }
+  runApp(MyApp(widget));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Widget startWidget;
+  MyApp(this.startWidget);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +52,7 @@ class MyApp extends StatelessWidget {
             title: 'Cinema Guide',
             theme: lightTheme,
             darkTheme: darkTheme,
-            home: OnBoardingScreen(),
+            home: startWidget,
             themeMode: ThemeMode.light,
             debugShowCheckedModeBanner: false,
           );

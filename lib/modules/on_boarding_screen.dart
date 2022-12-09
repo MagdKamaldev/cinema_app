@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, duplicate_ignore, use_key_in_widget_constructors, must_be_immutable
 import 'package:cinema_app/modules/login_screen.dart';
 import 'package:cinema_app/shared/components.dart';
+import 'package:cinema_app/shared/networks/local/cache_helper.dart';
 import 'package:cinema_app/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -43,17 +44,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   var boardController = PageController();
 
   bool isLast = false;
+  void submit() {
+    CacheHelper.saveData(key: "onBoarding", value: true).then((value) {
+      if (value) {
+        navigateAndFinish(context, LoginScreen());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          defaultTextButton(
-              text: "SKIP",
-              onpressed: () {
-                navigateAndFinish(context, LoginScreen());
-              }),
+          defaultTextButton(text: "SKIP", onpressed: submit),
         ],
       ),
       body: Padding(
@@ -101,7 +105,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 FloatingActionButton(
                   onPressed: () {
                     if (isLast) {
-                      navigateAndFinish(context, LoginScreen());
+                      submit();
                     } else {
                       boardController.nextPage(
                           duration: Duration(milliseconds: 750),
