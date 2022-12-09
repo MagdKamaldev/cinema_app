@@ -10,21 +10,20 @@ import 'package:cinema_app/shared/styles/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'layout/home_layout.dart';
-import 'models/user_model.dart';
 
-String? jwt;
-User? currentUser;
+
+//String? jwt;
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await CacheHelper.init();
-  jwt = CacheHelper.getString(key: "jwt");
+  //jwt = CacheHelper.getString(key: "jwt");
   DioHelper.init();
-  bool isLoggedIn = await DioHelper.jwtOrEmpty();
   Widget? widget;
-  bool onBoarding = CacheHelper.getData(key: "onBoarding");
-  String token = CacheHelper.getData(key: "token");
+  bool ?onBoarding = CacheHelper.getData(key: "onBoarding");
+  String? token = CacheHelper.getData(key: "token");
   if (onBoarding != null) {
     if (token != null) {
       widget = HomeLayout();

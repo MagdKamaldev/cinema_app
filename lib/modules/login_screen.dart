@@ -22,9 +22,9 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is AppLoginSuccesState) {
-            if (state.loginModel!.message == "Logged In Successfully") {
-              print(state.loginModel!.message);
-              CacheHelper.saveData(key: "token", value: state.loginModel!.token)
+            if (state.loginModel?.message == "Logged In Successfully") {
+              print(state.loginModel?.message);
+              CacheHelper.saveData(key: "token", value: state.loginModel?.token)
                   .then((value) {
                 navigateAndFinish(context, HomeLayout());
               });

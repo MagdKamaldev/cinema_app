@@ -8,7 +8,7 @@ class User {
   User({this.iD, this.name, this.email, this.permission, this.cinema});
 
   User.fromJson(Map<String, dynamic> json) {
-    iD = json['ID'];
+    iD = json['ID'];    
     name = json['name'];
     email = json['email'];
     permission = json['permission'];
