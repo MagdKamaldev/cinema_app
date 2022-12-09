@@ -3,6 +3,9 @@ import 'package:cinema_app/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../modules/app_start_point/login_screen.dart';
+import 'networks/local/cache_helper.dart';
+
 Widget defaultTextButton({
   required String text,
   required VoidCallback onpressed,
@@ -117,4 +120,11 @@ Color chooseToastColor(ToasStates state) {
       return Colors.amber;
   }
   return color;
+}
+void signOut(context){
+    CacheHelper.removeData(key: "token").then((value) {
+                      if (value) {
+                        navigateAndFinish(context, LoginScreen());
+                      }
+                    });
 }

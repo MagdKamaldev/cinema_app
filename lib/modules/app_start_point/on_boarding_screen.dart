@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, duplicate_ignore, use_key_in_widget_constructors, must_be_immutable
-import 'package:cinema_app/modules/login_screen.dart';
+import 'package:cinema_app/modules/app_start_point/login_screen.dart';
 import 'package:cinema_app/shared/components.dart';
 import 'package:cinema_app/shared/networks/local/cache_helper.dart';
 import 'package:cinema_app/shared/styles/colors.dart';

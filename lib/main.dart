@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
-import 'package:cinema_app/modules/login_screen.dart';
-import 'package:cinema_app/modules/on_boarding_screen.dart';
+import 'package:cinema_app/modules/app_start_point/login_screen.dart';
+import 'package:cinema_app/modules/app_start_point/on_boarding_screen.dart';
 import 'package:cinema_app/shared/bloc_observer.dart';
+import 'package:cinema_app/shared/cubit/app_cubit/app_cubit.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_cubit.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_states.dart';
 import 'package:cinema_app/shared/networks/local/cache_helper.dart';
@@ -43,7 +44,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (BuildContext context) => LoginCubit())],
+      providers: [
+        BlocProvider(create: (BuildContext context) => LoginCubit()),
+        BlocProvider(create: (BuildContext context) => AppCubit()),
+        ],
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {},
         builder: (context, state) {

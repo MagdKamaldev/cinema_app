@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, must_be_immutable, avoid_print
 
 import 'package:cinema_app/layout/home_layout.dart';
-import 'package:cinema_app/modules/register_screen.dart';
+import 'package:cinema_app/modules/app_start_point/register_screen.dart';
 import 'package:cinema_app/shared/components.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_cubit.dart';
 import 'package:cinema_app/shared/cubit/login_cubit/login_states.dart';
