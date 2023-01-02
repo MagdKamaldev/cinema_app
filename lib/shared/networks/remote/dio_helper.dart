@@ -1,5 +1,9 @@
 //import 'package:cinema_app/main.dart';
+// ignore_for_file: avoid_print
+
 import 'package:dio/dio.dart';
+
+import '../../../main.dart';
 
 class DioHelper {
   static Dio? dio;
@@ -7,10 +11,9 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-          baseUrl: 'http://92.205.60.182:5431/',
-          receiveDataWhenStatusError: true,
-          // headers: {"Cookie": "jwt=$jwt"}
-          ),
+        baseUrl: 'http://92.205.60.182:5431/',
+        receiveDataWhenStatusError: true,
+      ),
     );
   }
 
@@ -35,6 +38,7 @@ class DioHelper {
     required String url,
     Map<String, dynamic>? query,
   }) async {
+    dio!.options.headers["Cookie"] = "jwt=$token";
     return await dio!.get(
       url,
       queryParameters: query,

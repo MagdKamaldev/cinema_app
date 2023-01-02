@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 ThemeData lightTheme = ThemeData(
   primarySwatch: defaultColor,
+  fontFamily: "Lato",
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
@@ -46,6 +47,7 @@ ThemeData lightTheme = ThemeData(
 );
 ThemeData darkTheme = ThemeData(
   primarySwatch: defaultColor,
+  fontFamily: "Lato",
   scaffoldBackgroundColor: HexColor('333739'),
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,

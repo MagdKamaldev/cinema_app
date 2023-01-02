@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class FavouritesScreen extends StatelessWidget {
+class ActorsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

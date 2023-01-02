@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unnecessary_null_comparison
 import 'package:cinema_app/modules/app_start_point/login_screen.dart';
 import 'package:cinema_app/modules/app_start_point/on_boarding_screen.dart';
 import 'package:cinema_app/shared/bloc_observer.dart';
@@ -12,9 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'layout/home_layout.dart';
 
-
-//String? jwt;
-
+dynamic token = "";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +21,8 @@ Future<void> main() async {
   //jwt = CacheHelper.getString(key: "jwt");
   DioHelper.init();
   Widget? widget;
-  bool ?onBoarding = CacheHelper.getData(key: "onBoarding");
-  String? token = CacheHelper.getData(key: "token");
+  bool? onBoarding = CacheHelper.getData(key: "onBoarding");
+  token = CacheHelper.getData(key: "token");
   if (onBoarding != null) {
     if (token != null) {
       widget = HomeLayout();
@@ -46,8 +44,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => LoginCubit()),
-        BlocProvider(create: (BuildContext context) => AppCubit()),
-        ],
+        BlocProvider(
+            create: (BuildContext context) => AppCubit()..getHomeData()),
+      ],
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {},
         builder: (context, state) {
