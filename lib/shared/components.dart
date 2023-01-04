@@ -6,6 +6,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../modules/app_start_point/login_screen.dart';
 import 'networks/local/cache_helper.dart';
 
+Widget myDivider() => Padding(
+      padding: const EdgeInsetsDirectional.only(
+        start: 20.0,
+      ),
+      child: Container(
+        width: double.infinity,
+        height: 1.0,
+        color: Colors.grey[300],
+      ),
+    );
+
+
 Widget defaultTextButton({
   required String text,
   required VoidCallback onpressed,

@@ -17,6 +17,7 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
+        cubit.homeModel?.movies!.sort((a, b) => b.rating!.compareTo(a.rating!));
         return ConditionalBuilder(
             condition: cubit.homeModel != null,
             builder: (context) {
@@ -76,8 +77,12 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: SizedBox(width: 200, height: 230, child: image),
+            borderRadius: BorderRadius.circular(8),
+            child: SizedBox(
+              width: 200,
+              height: 230,
+              child: Hero(tag: "Movie ${model.iD}", child: image),
+            ),
           ),
           SizedBox(
             height: 10,
@@ -95,7 +100,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 width: 20,
               ),
-              Text("3.5"),
+              Text(model.rating.toStringAsFixed(2)),
               Icon(
                 IconBroken.Star,
                 color: Colors.yellow[600],

@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_print
-
-import 'dart:convert';
-
+// ignore_for_file: avoid_print, prefer_const_constructors
 import 'package:cinema_app/models/home_model.dart';
 import 'package:cinema_app/modules/inside_user/favourites_screen.dart';
 import 'package:cinema_app/modules/inside_user/profile_screen.dart';
@@ -29,6 +26,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   HomeModel? homeModel;
+
   void getHomeData() {
     emit(AppGetMoviesDataLoadingState());
     DioHelper.getData(
@@ -42,7 +40,23 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  HomeModel? searchMovies;
+
+  void getSearchData() {
+    emit(AppGetAllMoviesDataLoadingState());
+    DioHelper.getData(
+      url: allMovies,
+    ).then((value) {
+      searchMovies = HomeModel.fromJson(value.data);
+      emit(AppGetAllMoviesDataSuccesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppGetAllMoviesDataErrorState());
+    });
+  }
+
   bool isRated = false;
+
   void saveRating(double rate, String id) {
     isRated = !isRated;
     emit(AppSubmitRateState());
@@ -51,4 +65,5 @@ class AppCubit extends Cubit<AppStates> {
       "rating": rate,
     });
   }
+  
 }

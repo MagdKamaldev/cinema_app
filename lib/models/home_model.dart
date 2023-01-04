@@ -28,18 +28,24 @@ class Movies {
   List<Cinemas>? cinemas;
   String? releaseDate;
   List<Posters>? posters;
-
-  Movies(
-      {this.iD,
-      this.title,
-      this.cast,
-      this.cinemas,
-      this.releaseDate,
-      this.posters});
+  double? rating;
+  double? amountOfRatings;
+  Movies({
+    this.iD,
+    this.title,
+    this.cast,
+    this.cinemas,
+    this.releaseDate,
+    this.posters,
+    this.rating,
+    this.amountOfRatings,
+  });
 
   Movies.fromJson(Map<String, dynamic> json) {
     iD = json['ID'];
     title = json['title'];
+    rating = double.parse(json['rating'].toString());
+    amountOfRatings = double.parse(json['amount_of_ratings'].toString());
     if (json['cast'] != null) {
       cast = <Cast>[];
       json['cast'].forEach((v) {
@@ -65,6 +71,8 @@ class Movies {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['ID'] = iD;
     data['title'] = title;
+    data['rating'] = rating;
+    data['amount_of_ratings'] = amountOfRatings;
     if (cast != null) {
       data['cast'] = cast!.map((v) => v.toJson()).toList();
     }

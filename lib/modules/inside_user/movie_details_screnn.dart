@@ -16,13 +16,14 @@ class MovieDetails extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return Scaffold(body: moviePage(model, AppCubit.get(context)));
+        return Scaffold(
+            appBar: AppBar(), body: moviePage(model, AppCubit.get(context)));
       },
     );
   }
 
   Widget moviePage(model, cubit) {
-    late double rating;
+    double rating = 3;
     List<Image> images = [];
     image = Image(
       image: image.image,
@@ -42,71 +43,93 @@ class MovieDetails extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 420,
-            width: double.infinity,
-            child: PageView.builder(
-              itemBuilder: ((context, index) => SizedBox(
-                    width: double.infinity,
-                    child: images[index],
-                  )),
-              itemCount: images.length,
-            ),
-          ),
-          Text(
-            model.title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RatingBar(
-                  initialRating: 3,
-                  minRating: 1,
-                  maxRating: 5,
-                  ratingWidget: RatingWidget(
-                      full: const Icon(
-                        IconBroken.Star,
-                        color: Colors.yellow,
-                      ),
-                      empty: const Icon(
-                        IconBroken.Star,
-                        color: Colors.black,
-                      ),
-                      half: const Icon(
-                        IconBroken.Star,
-                        color: Colors.green,
-                      )),
-                  onRatingUpdate: (value) {
-                    rating = value;
-                  }),
-              const SizedBox(
-                width: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 450,
+              width: double.infinity,
+              child: PageView.builder(
+                itemBuilder: ((context, index) => SizedBox(
+                      width: double.infinity,
+                      child: index == 0
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Hero(
+                                  tag: "Movie ${model.iD}",
+                                  child: images[index]))
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: images[index],
+                            ),
+                    )),
+                itemCount: images.length,
               ),
-              IconButton(
-                  onPressed: () {
-                    cubit.saveRating(rating, model.iD.toString());
-                  },
-                  icon: const Icon(
-                    IconBroken.Tick_Square,
-                    size: 30,
-                    color: Colors.green,
-                  )),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            "Rate the movie !",
-            style: TextStyle(color: Colors.grey[700]),
-          ),
-        ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              model.title,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RatingBar(
+                    initialRating: 3,
+                    minRating: 1,
+                    maxRating: 5,
+                    ratingWidget: RatingWidget(
+                        full: const Icon(
+                          IconBroken.Star,
+                          color: Colors.yellow,
+                        ),
+                        empty: const Icon(
+                          IconBroken.Star,
+                          color: Colors.black,
+                        ),
+                        half: const Icon(
+                          IconBroken.Star,
+                          color: Colors.green,
+                        )),
+                    onRatingUpdate: (value) {
+                      rating = value;
+                    }),
+                const SizedBox(
+                  width: 50,
+                ),
+                Column(children: [
+                  IconButton(
+                    onPressed: () {
+                      cubit.saveRating(rating, model.iD.toString());
+                    },
+                    icon: const Icon(
+                      Icons.send_rounded,
+                      size: 30,
+                      color: Colors.green,
+                    ),
+                  ),
+                  const Text(
+                    "Send",
+                    style: TextStyle(color: Colors.green),
+                  )
+                ]),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Rate the movie !",
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -10,4 +10,13 @@ class AppGetMoviesDataSuccesState extends AppStates{}
 
 class AppGetMoviesDataErrorState extends AppStates{}
 
+//search
+class AppGetAllMoviesDataLoadingState extends AppStates{}
+
+class AppGetAllMoviesDataSuccesState extends AppStates{}
+
+class AppGetAllMoviesDataErrorState extends AppStates{}
+
 class AppSubmitRateState extends AppStates{}
+
+class AppSearchFilteredState extends AppStates{}
